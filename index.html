@@ -13,19 +13,19 @@
         <h2>Elige tu mascota</h2>
 
         <label for="tatara">Tatara</label>
-        <input type="radio" name="mascota" id="tatara">
+        <input type="radio" name="mascota" id="tatara" class="mascota-radio">
 
         <label for="holala">Holala</label>
-        <input type="radio" name="mascota" id="holala">
+        <input type="radio" name="mascota" id="holala" class="mascota-radio">
 
         <label for="keton">Keton</label>
-        <input type="radio" name="mascota" id="keton">
+        <input type="radio" name="mascota" id="keton" class="mascota-radio">
 
         <button id="button-mascota">Seleccionar</button>
     </section>
 
     <section id="seleccionar-ataque">
-        <p>Tu mascota tiene x vidas</p>
+        <p>Tu mascota <span id="mascota-jugador"></span> tiene x vidas</p>
         <p>La mascota de tu enemigo tiene x vida</p>
         <div>
             <button id="mascota-fuego">Fuego</button>
@@ -35,7 +35,9 @@
     </section>
 
     <section>
-        <button id="button-reiniciar"></button>
+        <button id="button-reiniciar">Reiniciar</button>
     </section>
+
+    <script src="./js/main.js"></script>
 </body>
 </html>
