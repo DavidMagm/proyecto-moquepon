@@ -1,5 +1,7 @@
 let ataqueJugador
 let enemigoAtaque
+let vidasJugador = 3;
+let vidasEnemigo = 3;
 function seleccionarMascota() {
     for(let mascota of inputMascotaJugador) {
         if(mascota.checked) {
@@ -29,13 +31,29 @@ function combate() {
         mensaje('empate')
     }
     else if (ataqueJugador == 'fuego' && enemigoAtaque == 'tierra') {
+        vidasEnemigo--
+        spanVidasEnemigo.innerHTML = vidasEnemigo
         mensaje('ganaste')
     } else if (ataqueJugador == 'agua' && enemigoAtaque == 'fuego') {
+        vidasEnemigo--
+        spanVidasEnemigo.innerHTML = vidasEnemigo
         mensaje('ganaste')
     } else if (ataqueJugador == 'tierra' && enemigoAtaque == 'agua') {
+        vidasEnemigo--
+        spanVidasEnemigo.innerHTML = vidasEnemigo
         mensaje('ganaste')
     } else {
+        vidasJugador--
+        spanVidasJugador.innerHTML = vidasJugador
         mensaje('perdiste')
+    }
+}
+
+function resivarVidas() {
+    if(vidasEnemigo == 0) {
+        mensajeFinal('Felicidades GANASTE')
+    } else if(vidasJugador == 0){
+        mensajeFinal('Vuelve a intentarlo PERTISTE')
     }
 }
 
@@ -60,8 +78,22 @@ function ataqueEnemigo() {
     }
 }
 
+function mensajeFinal(resultado) {
+    const textoFinal = document.createElement('p')
+    textoFinal.innerHTML = resultado
+    mensajeAtaque.appendChild(textoFinal)
+
+    buttonAgua.disabled = true
+    buttonFuego.disabled = true
+    buttonTierra.disabled = true
+}
+
 function mensaje(resultado) {
     mensajeAtaque.innerHTML `tu mascota elegio ${ataqueJugador} y el enemigo ${enemigoAtaque} - ${resultado}`
+}
+
+function reiniciandoJuego() {
+    location.reload()
 }
 const inputMascotaJugador = document.querySelectorAll('.mascota-radio')
 
@@ -72,7 +104,11 @@ const buttonMascotaJugador = document.getElementById('button-mascota')
 const buttonFuego = document.getElementById('button-fuego')
 const buttonAgua = document.getElementById('button-agua')
 const buttonTierra = document.getElementById('button-tierra')
+const spanVidasJugador = document.getElementById('vidas-jugador')
+const spanVidasEnemigo = document.getElementById('vidas-enemigo')
+const buttonReiniciar = document.getElementById('button-reiniciar')
 buttonFuego.addEventListener('click', ataqueFuego)
 buttonAgua.addEventListener('click', ataqueAgua)
 buttonTierra.addEventListener('click', ataqueTierra)
 buttonMascotaJugador.addEventListener('click', seleccionarMascota)
+buttonReiniciar.addEventListener('click', reiniciandoJuego)
