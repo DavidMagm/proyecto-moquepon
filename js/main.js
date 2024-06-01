@@ -2,12 +2,21 @@ let ataqueJugador
 let enemigoAtaque
 let vidasJugador = 3;
 let vidasEnemigo = 3;
+
+function iniciarJuego() {
+    sectionAtaque.style.display = 'none'
+    sectionReinicio.style.display = 'none'
+}
+
 function seleccionarMascota() {
     for(let mascota of inputMascotaJugador) {
         if(mascota.checked) {
             nombreMascotaJugador.innerHTML = mascota.id
         }
     }
+
+    sectionAtaque.style.display = 'block'
+    sectionMascota.style.display = 'none'
 }
 
 function ramdomNumber(min, max) {
@@ -86,6 +95,7 @@ function mensajeFinal(resultado) {
     buttonAgua.disabled = true
     buttonFuego.disabled = true
     buttonTierra.disabled = true
+    sectionReinicio.style.display = 'block'
 }
 
 function mensaje(resultado) {
@@ -107,8 +117,13 @@ const buttonTierra = document.getElementById('button-tierra')
 const spanVidasJugador = document.getElementById('vidas-jugador')
 const spanVidasEnemigo = document.getElementById('vidas-enemigo')
 const buttonReiniciar = document.getElementById('button-reiniciar')
+const sectionMascota = document.getElementById('seleccionar-mascota')
+const sectionAtaque = document.getElementById('seleccionar-ataque')
+const sectionReinicio = document.getElementById('reiniciar-juego')
 buttonFuego.addEventListener('click', ataqueFuego)
 buttonAgua.addEventListener('click', ataqueAgua)
 buttonTierra.addEventListener('click', ataqueTierra)
 buttonMascotaJugador.addEventListener('click', seleccionarMascota)
 buttonReiniciar.addEventListener('click', reiniciandoJuego)
+
+window.addEventListener('load', iniciarJuego)
