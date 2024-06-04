@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 <body>
@@ -10,16 +11,28 @@
     <h1>Mokepon</h1>
 
     <section id="seleccionar-mascota">
-        <h2>Elige tu mascota</h2>
+        <h2 class="subtitulo">Elige tu mascota</h2>
 
-        <label for="tatara">Tatara</label>
-        <input type="radio" name="mascota" id="tatara" class="mascota-radio">
+        <div class="tarjeta">
+            <label for="tatara" class="tarjeta-moquepon">
+                <p>Tatara</p>
+                <img src="./assects/mokepons_mokepon_capipepo_attack.webp" alt="tatara">
+            </label>
+            <input type="radio" name="mascota" id="tatara" class="mascota-radio">
+    
+            <label for="holala" class="tarjeta-moquepon">
+                <p>Holala</p>
+                <img src="./assects/mokepons_mokepon_hipodoge_attack.webp" alt="holala">
+            </label>
+            <input type="radio" name="mascota" id="holala" class="mascota-radio">
+    
+            <label for="keton" class="tarjeta-moquepon">
+                <p>Keton</p>
+                <img src="./assects/mokepons_mokepon_ratigueya_attack.webp" alt="keton">
+            </label>
+            <input type="radio" name="mascota" id="keton" class="mascota-radio">
+        </div>
 
-        <label for="holala">Holala</label>
-        <input type="radio" name="mascota" id="holala" class="mascota-radio">
-
-        <label for="keton">Keton</label>
-        <input type="radio" name="mascota" id="keton" class="mascota-radio">
 
         <button id="button-mascota">Seleccionar</button>
     </section>

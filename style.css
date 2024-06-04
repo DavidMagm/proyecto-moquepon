@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+body {
+    font-family: "Open Sans", sans-serif;
+    background-color: #FFA27F;
+}
+
+h1 {
+    text-align: center;
+}
+
+#seleccionar-mascota {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tarjeta {
+    display: flex;
+    gap: 4px;
+    border: 2px solid white;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.tarjeta-moquepon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    width: 180px;
+    height: 110px;
+    border-radius: 8px;
+    background-color: #FFE8C5;
+}
+
+.tarjeta-moquepon img {
+    width: 80px;
+    object-fit: cover;
+}
+
+input {
+    display: none;
+}
+
+#button-mascota {
+    margin-top: 12px;
+    width: 160px;
+    height: 40px;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+    background-color: #FF0000;
+    border-radius: 8px;
+    cursor: pointer;
+}
