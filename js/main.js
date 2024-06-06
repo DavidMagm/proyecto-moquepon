@@ -15,8 +15,10 @@ function seleccionarMascota() {
         }
     }
 
-    sectionAtaque.style.display = 'block'
+    sectionAtaque.style.display = 'flex'
     sectionMascota.style.display = 'none'
+
+    seleccionarMascotaEnemigo()
 }
 
 function ramdomNumber(min, max) {
@@ -33,29 +35,30 @@ function seleccionarMascotaEnemigo() {
         nombreMascotaEnemigo.innerHTML = 'keton'
     }
 
-    combate()
 }
 function combate() {
     if(ataqueJugador == enemigoAtaque) {
         mensaje('empate')
     }
     else if (ataqueJugador == 'fuego' && enemigoAtaque == 'tierra') {
+        mensaje('ganaste')
         vidasEnemigo--
         spanVidasEnemigo.innerHTML = vidasEnemigo
-        mensaje('ganaste')
     } else if (ataqueJugador == 'agua' && enemigoAtaque == 'fuego') {
+        mensaje('ganaste')
         vidasEnemigo--
         spanVidasEnemigo.innerHTML = vidasEnemigo
-        mensaje('ganaste')
     } else if (ataqueJugador == 'tierra' && enemigoAtaque == 'agua') {
+        mensaje('ganaste')
         vidasEnemigo--
         spanVidasEnemigo.innerHTML = vidasEnemigo
-        mensaje('ganaste')
     } else {
+        mensaje('perdiste')
         vidasJugador--
         spanVidasJugador.innerHTML = vidasJugador
-        mensaje('perdiste')
     }
+
+    resivarVidas()
 }
 
 function resivarVidas() {
@@ -68,15 +71,18 @@ function resivarVidas() {
 
 function ataqueFuego() {
     ataqueJugador = 'fuego'
+    ataqueAleatorioEnemigo()
 }
 function ataqueAgua() {
     ataqueJugador = 'agua'
+    ataqueAleatorioEnemigo()
 }
 function ataqueTierra() {
     ataqueJugador = 'tierra'
+    ataqueAleatorioEnemigo()
 }
 
-function ataqueEnemigo() {
+function ataqueAleatorioEnemigo() {
     let numeroAleatorio = ramdomNumber(1,3)
     if(numeroAleatorio == 1) {
         enemigoAtaque = 'fuego'
@@ -85,12 +91,12 @@ function ataqueEnemigo() {
     } else {
         enemigoAtaque = 'tierra'
     }
+
+    combate()
 }
 
-function mensajeFinal(resultado) {
-    const textoFinal = document.createElement('p')
-    textoFinal.innerHTML = resultado
-    mensajeAtaque.appendChild(textoFinal)
+function mensajeFinal(resultadoFinal) {
+    mensajeAtaque.innerHTML = resultadoFinal
 
     buttonAgua.disabled = true
     buttonFuego.disabled = true
@@ -99,7 +105,9 @@ function mensajeFinal(resultado) {
 }
 
 function mensaje(resultado) {
-    mensajeAtaque.innerHTML `tu mascota elegio ${ataqueJugador} y el enemigo ${enemigoAtaque} - ${resultado}`
+    mensajeAtaque.innerHTML = resultado
+    ataqueDelJugador.innerHTML = ataqueJugador
+    ataqueDelEnemigo.innerHTML = enemigoAtaque 
 }
 
 function reiniciandoJuego() {
@@ -107,7 +115,9 @@ function reiniciandoJuego() {
 }
 const inputMascotaJugador = document.querySelectorAll('.mascota-radio')
 
-const mensajeAtaque = document.getElementById('mensaje, p')
+let mensajeAtaque = document.getElementById('resultado')
+const ataqueDelJugador = document.getElementById('ataque-del-jugador')
+const ataqueDelEnemigo = document.getElementById('ataque-del-enemigo')
 const nombreMascotaJugador = document.getElementById('mascota-jugador')
 const nombreMascotaEnemigo = document.getElementById('mascota-enemigo')
 const buttonMascotaJugador = document.getElementById('button-mascota')

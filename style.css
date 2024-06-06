@@ -44,6 +44,10 @@ input {
     display: none;
 }
 
+input:checked + .tarjeta-moquepon {
+    background-color: #97BE5A;
+}
+
 #button-mascota {
     margin-top: 12px;
     width: 160px;
@@ -53,4 +57,53 @@ input {
     background-color: #FF0000;
     border-radius: 8px;
     cursor: pointer;
+}
+
+#seleccionar-ataque {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-ataque {
+    width: 130px;
+    padding: 10px;
+    border-radius: 20px;
+    font-family: "Open Sans", sans-serif;
+}
+
+
+#mensaje {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    padding: 10px;
+    width: 260px;
+    border-radius: 20px;
+    background-color: #97BE5A;
+}
+
+#button-reiniciar {
+    width: 80px;
+    border-radius: 10px;
+    font-family: "Open Sans", sans-serif;
+}
+
+.tarjeta-ataque {
+    display: grid;
+    grid-template-columns: 200px 200px;
+    margin-top: 20px;
+    border: 2px solid white;
+    border-radius: 20px;
+}
+
+.tarjeta-mensaje {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tarjeta-ataque-izquierda {
+    border-right: 2px solid white;
 }
