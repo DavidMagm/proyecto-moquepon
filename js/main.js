@@ -2,8 +2,19 @@ let ataqueJugador
 let enemigoAtaque
 let vidasJugador = 3;
 let vidasEnemigo = 3;
+let innerMoquepones
 
 function iniciarJuego() {
+    moquepones.forEach(moquepon => {
+        innerMoquepones = `
+            <input type="radio" name="mascota" id=${moquepon.nombre} class="mascota-radio">
+            <label for=${moquepon.nombre} class="tarjeta-moquepon">
+                <p>${moquepon.nombre}</p>
+                <img src=${moquepon.img} alt=${moquepon.nombre}>
+            </label>
+        `
+        tarjetaSeleccionarMascota.innerHTML += innerMoquepones
+    });
     sectionAtaque.style.display = 'none'
     sectionReinicio.style.display = 'none'
 }
@@ -113,9 +124,27 @@ function mensaje(resultado) {
 function reiniciandoJuego() {
     location.reload()
 }
+
+// CLASES
+
+class Moquepon {
+    constructor(nombre, vidas, img) {
+        this.nombre = nombre
+        this.vidas = vidas
+        this.img = img
+    }
+}
+
+let tatara = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp')
+let holala = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp')
+let keton = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp')
+
+let moquepones = [tatara, holala, keton]
+
 const inputMascotaJugador = document.querySelectorAll('.mascota-radio')
 
 let mensajeAtaque = document.getElementById('resultado')
+const tarjetaSeleccionarMascota = document.getElementById('tarjeta-seleccionar')
 const ataqueDelJugador = document.getElementById('ataque-del-jugador')
 const ataqueDelEnemigo = document.getElementById('ataque-del-enemigo')
 const nombreMascotaJugador = document.getElementById('mascota-jugador')
