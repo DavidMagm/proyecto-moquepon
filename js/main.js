@@ -1,8 +1,13 @@
-let ataqueJugador
-let enemigoAtaque
+let ataqueJugador = []
+let enemigoAtaque = []
 let vidasJugador = 3;
 let vidasEnemigo = 3;
-let innerMoquepones
+let innerMoquepones;
+let botones = [];
+let innerAtaques;
+let mascotaJugador;
+let mascotaEnemigoAtaque;
+let ataques;
 
 function iniciarJuego() {
     moquepones.forEach(moquepon => {
@@ -23,12 +28,13 @@ function seleccionarMascota() {
     for(let mascota of inputMascotaJugador) {
         if(mascota.checked) {
             nombreMascotaJugador.innerHTML = mascota.id
+            mascotaJugador = mascota.id
         }
     }
 
     sectionAtaque.style.display = 'flex'
     sectionMascota.style.display = 'none'
-
+    extraerAtaque(mascotaJugador)
     seleccionarMascotaEnemigo()
 }
 
@@ -37,16 +43,55 @@ function ramdomNumber(min, max) {
 }
 
 function seleccionarMascotaEnemigo() {
-    let numeroAleatorio = ramdomNumber(1,3)
-    if(numeroAleatorio == 1) {
-        nombreMascotaEnemigo.innerHTML = 'tatara'
-    } else if(numeroAleatorio == 2) {
-        nombreMascotaEnemigo.innerHTML = 'holala'
-    } else {
-        nombreMascotaEnemigo.innerHTML = 'keton'
-    }
-
+    let numeroAleatorio = ramdomNumber(1,moquepones.length -1)
+    // if(numeroAleatorio == 1) {
+    //     nombreMascotaEnemigo.innerHTML = 'tatara'
+    // } else if(numeroAleatorio == 2) {
+    //     nombreMascotaEnemigo.innerHTML = 'holala'
+    // } else {
+    //     nombreMascotaEnemigo.innerHTML = 'keton'
+    // }
+    nombreMascotaEnemigo.innerHTML = moquepones[numeroAleatorio].nombre
+    mascotaEnemigoAtaque = moquepones[numeroAleatorio].ataques
 }
+
+function extraerAtaque(mascotaJugador) {
+    moquepones.forEach(moquepon => {
+        if(mascotaJugador == moquepon.nombre) {
+            ataques = moquepon.ataques
+        }
+    })
+}
+
+function mostrarAtaques(ataques) {
+    ataques.forEach(ataque => {
+        innerAtaques = `
+            <button id=${ataque.id} class="button-ataque">${ataque.nombre}</button>
+        `
+        sectionMascotaAtaque.innerHTML += innerAtaques
+
+    })
+
+    botones = document.querySelectorAll('.button-ataque')
+}
+
+function secuenciaAtaque() {
+    botones.forEach(boton => {
+        boton.addEventListener('click', (e) => {
+            if(e.target.textContent == '🔥') {
+                ataqueJugador.push('FUEGO')
+                boton.style.background = '#112f58'
+            }
+            else if (e.target.textContent == '💧') {
+                ataqueJugador.push('AGUA')
+            } else {
+                ataqueJugador.push('TIERRA')
+            }
+            ataqueAleatorioEnemigo()
+        })
+    })
+}
+
 function combate() {
     if(ataqueJugador == enemigoAtaque) {
         mensaje('empate')
@@ -80,27 +125,27 @@ function resivarVidas() {
     }
 }
 
-function ataqueFuego() {
-    ataqueJugador = 'fuego'
-    ataqueAleatorioEnemigo()
-}
-function ataqueAgua() {
-    ataqueJugador = 'agua'
-    ataqueAleatorioEnemigo()
-}
-function ataqueTierra() {
-    ataqueJugador = 'tierra'
-    ataqueAleatorioEnemigo()
-}
+// function ataqueFuego() {
+//     ataqueJugador = 'fuego'
+//     ataqueAleatorioEnemigo()
+// }
+// function ataqueAgua() {
+//     ataqueJugador = 'agua'
+//     ataqueAleatorioEnemigo()
+// }
+// function ataqueTierra() {
+//     ataqueJugador = 'tierra'
+//     ataqueAleatorioEnemigo()
+// }
 
 function ataqueAleatorioEnemigo() {
-    let numeroAleatorio = ramdomNumber(1,3)
-    if(numeroAleatorio == 1) {
-        enemigoAtaque = 'fuego'
-    } else if(numeroAleatorio == 2) {
-        enemigoAtaque = 'agua'
+    let numeroAleatorio = ramdomNumber(0,mascotaEnemigoAtaque.length -1)
+    if(numeroAleatorio == 0 || numeroAleatorio == 1) {
+        enemigoAtaque.push('FUEGO')
+    } else if(numeroAleatorio == 3 || numeroAleatorio == 4) {
+        enemigoAtaque.push('AGUA')
     } else {
-        enemigoAtaque = 'tierra'
+        enemigoAtaque.push('TIERRA')
     }
 
     combate()
@@ -132,18 +177,41 @@ class Moquepon {
         this.nombre = nombre
         this.vidas = vidas
         this.img = img
+        this.ataques = []
     }
 }
 
 let tatara = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp')
+tatara.ataques.push(
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🌱',id:'botton-tierra'}
+)
 let holala = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp')
+holala.ataques.push(
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'}
+)
 let keton = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp')
+keton.ataques.push(
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🌱',id:'botton-tierra'}
+)
 
 let moquepones = [tatara, holala, keton]
 
 const inputMascotaJugador = document.querySelectorAll('.mascota-radio')
 
 let mensajeAtaque = document.getElementById('resultado')
+let sectionMascotaAtaque = document.getElementById('section-button-ataque')
 const tarjetaSeleccionarMascota = document.getElementById('tarjeta-seleccionar')
 const ataqueDelJugador = document.getElementById('ataque-del-jugador')
 const ataqueDelEnemigo = document.getElementById('ataque-del-enemigo')
