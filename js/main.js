@@ -1,7 +1,38 @@
+let mensajeAtaque = document.getElementById('resultado')
+let sectionMascotaAtaque = document.getElementById('section-button-ataque')
+const tarjetaSeleccionarMascota = document.getElementById('tarjeta-seleccionar')
+const ataqueDelJugador = document.getElementById('ataque-del-jugador')
+const ataqueDelEnemigo = document.getElementById('ataque-del-enemigo')
+const nombreMascotaJugador = document.getElementById('mascota-jugador')
+const nombreMascotaEnemigo = document.getElementById('mascota-enemigo')
+const buttonMascotaJugador = document.getElementById('button-mascota')
+const spanVidasJugador = document.getElementById('vidas-jugador')
+const spanVidasEnemigo = document.getElementById('vidas-enemigo')
+const buttonReiniciar = document.getElementById('button-reiniciar')
+const sectionMascota = document.getElementById('seleccionar-mascota')
+const sectionAtaque = document.getElementById('seleccionar-ataque')
+const sectionReinicio = document.getElementById('reiniciar-juego')
+const sectionVerMapa = document.getElementById('ver-mapa')
+const mapa = document.getElementById('mapa')
+const moverArriba = document.getElementById('mover-arriba')
+const moverDerecha = document.getElementById('mover-derecha')
+const moverIzquierda = document.getElementById('mover-izquierda')
+const moverAbajo = document.getElementById('mover-abajo')
+const buttonMover = document.querySelectorAll('.button-mover')
+moverArriba.addEventListener('mousedown', moverPersonajeArriba)
+moverDerecha.addEventListener('mousedown', moverPersonajeDerecha)
+moverIzquierda.addEventListener('mousedown', moverPersonajeIzquierda)
+moverAbajo.addEventListener('mousedown', moverPersonajeAbajo)
+buttonMascotaJugador.addEventListener('mousedown', seleccionarMascota)
+buttonReiniciar.addEventListener('mousedown', reiniciandoJuego)
+
+for(let button of buttonMover) {
+    button.addEventListener('mouseup', detenerMovimiento)
+}
+
+
 let ataqueJugador = []
 let enemigoAtaque = []
-let vidasJugador = 3;
-let vidasEnemigo = 3;
 let victoriasJugador = 0;
 let victoriasEnemigo = 0;
 let innerMoquepones;
@@ -17,6 +48,8 @@ let indexAtaqueJugador;
 let indexAtaqueEnmigo;
 let ataques = [];
 let inputMascotaJugador
+let lienzo = mapa.getContext('2d')
+let intervalo;
 
 function iniciarJuego() {
     moquepones.forEach(moquepon => {
@@ -31,6 +64,7 @@ function iniciarJuego() {
     });
     sectionAtaque.style.display = 'none'
     sectionReinicio.style.display = 'none'
+    sectionVerMapa.style.display = 'none'
 }
 
 function seleccionarMascota() {
@@ -42,8 +76,10 @@ function seleccionarMascota() {
         }
     }
 
-    sectionAtaque.style.display = 'flex'
+    //sectionAtaque.style.display = 'flex'
+    sectionVerMapa.style.display = 'flex'
     sectionMascota.style.display = 'none'
+    intervalo = setInterval(pintarPersonaje, 50);
     extraerAtaque(mascotaJugador)
     seleccionarMascotaEnemigo()
 }
@@ -209,6 +245,39 @@ function reiniciandoJuego() {
     location.reload()
 }
 
+function pintarPersonaje() {
+    holala.x = holala.x + holala.velocidadX
+    holala.y = holala.y + holala.velocidadY
+    lienzo.clearRect(0, 0, mapa.width, mapa.height)
+    lienzo.drawImage(
+        holala.mapaFoto,
+        holala.x,
+        holala.y,
+        holala.ancho,
+        holala.alto
+    )
+}
+
+function moverPersonajeArriba() {
+    holala.velocidadY = -5
+}
+
+function moverPersonajeDerecha() {
+    holala.velocidadX = 5
+}
+
+function moverPersonajeIzquierda() {
+    holala.velocidadX = -5
+}
+
+function moverPersonajeAbajo() {
+    holala.velocidadY = 5
+}
+
+function detenerMovimiento() {
+    holala.velocidadX = 0
+    holala.velocidadY = 0
+}
 // CLASES
 
 class Moquepon {
@@ -217,6 +286,14 @@ class Moquepon {
         this.vidas = vidas
         this.img = img
         this.ataques = []
+        this.x = 20
+        this.y = 30
+        this.ancho = 80
+        this.alto = 80
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = img
+        this.velocidadX = 0
+        this.velocidadY = 0
     }
 }
 
@@ -249,24 +326,6 @@ moquepones.push(tatara,holala,keton)
 
 
 
-let mensajeAtaque = document.getElementById('resultado')
-let sectionMascotaAtaque = document.getElementById('section-button-ataque')
-const tarjetaSeleccionarMascota = document.getElementById('tarjeta-seleccionar')
-const ataqueDelJugador = document.getElementById('ataque-del-jugador')
-const ataqueDelEnemigo = document.getElementById('ataque-del-enemigo')
-const nombreMascotaJugador = document.getElementById('mascota-jugador')
-const nombreMascotaEnemigo = document.getElementById('mascota-enemigo')
-const buttonMascotaJugador = document.getElementById('button-mascota')
-const spanVidasJugador = document.getElementById('vidas-jugador')
-const spanVidasEnemigo = document.getElementById('vidas-enemigo')
-const buttonReiniciar = document.getElementById('button-reiniciar')
-const sectionMascota = document.getElementById('seleccionar-mascota')
-const sectionAtaque = document.getElementById('seleccionar-ataque')
-const sectionReinicio = document.getElementById('reiniciar-juego')
-// buttonFuego.addEventListener('click', ataqueFuego)
-// buttonAgua.addEventListener('click', ataqueAgua)
-// buttonTierra.addEventListener('click', ataqueTierra)
-buttonMascotaJugador.addEventListener('click', seleccionarMascota)
-buttonReiniciar.addEventListener('click', reiniciandoJuego)
+
 
 window.addEventListener('load', iniciarJuego)

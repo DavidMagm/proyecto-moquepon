@@ -108,6 +108,17 @@ input:checked + .tarjeta-moquepon {
     border-right: 2px solid white;
 }
 
+#ver-mapa {
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mapa {
+    border: 2px solid white;
+}
+
 @media (max-width:360px) {
     .tarjeta, .button-ataques {
         display: flex;
