@@ -25,6 +25,8 @@ moverIzquierda.addEventListener('mousedown', moverPersonajeIzquierda)
 moverAbajo.addEventListener('mousedown', moverPersonajeAbajo)
 buttonMascotaJugador.addEventListener('mousedown', seleccionarMascota)
 buttonReiniciar.addEventListener('mousedown', reiniciandoJuego)
+window.addEventListener('keydown', moverConFlecha)
+window.addEventListener('keyup', detenerMovimiento);
 
 for(let button of buttonMover) {
     button.addEventListener('mouseup', detenerMovimiento)
@@ -67,6 +69,11 @@ function iniciarJuego() {
     sectionVerMapa.style.display = 'none'
 }
 
+function iniciarMapa() {
+    intervalo = setInterval(pintarPersonaje, 50);
+
+}
+
 function seleccionarMascota() {
     inputMascotaJugador = document.querySelectorAll('.mascota-radio')
     for(let mascota of inputMascotaJugador) {
@@ -79,7 +86,7 @@ function seleccionarMascota() {
     //sectionAtaque.style.display = 'flex'
     sectionVerMapa.style.display = 'flex'
     sectionMascota.style.display = 'none'
-    intervalo = setInterval(pintarPersonaje, 50);
+    iniciarMapa()
     extraerAtaque(mascotaJugador)
     seleccionarMascotaEnemigo()
 }
@@ -277,6 +284,25 @@ function moverPersonajeAbajo() {
 function detenerMovimiento() {
     holala.velocidadX = 0
     holala.velocidadY = 0
+}
+
+function moverConFlecha(event) {
+    switch (event.key) {
+        case 'ArrowUp':
+            moverPersonajeArriba()
+            break;
+        case 'ArrowDown':
+            moverPersonajeAbajo()
+            break
+        case 'ArrowLeft':
+            moverPersonajeIzquierda()
+            break
+        case 'ArrowRight': 
+            moverPersonajeDerecha()
+            break
+        default:
+            break;
+    }
 }
 // CLASES
 
