@@ -262,6 +262,12 @@ function pintarCanvas() {
     tataraEnemigo.pintarMoquepon()
     holalaEnemigo.pintarMoquepon()
     ketonEnemigo.pintarMoquepon()
+
+    if(mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
+        revisarColision(holalaEnemigo)
+        revisarColision(tataraEnemigo)
+        revisarColision(ketonEnemigo)
+    }
 }
 
 function moverPersonajeArriba() {
@@ -303,6 +309,29 @@ function moverConFlecha(event) {
             break;
     }
 }
+
+function revisarColision(enemigo) {
+    const arribaEnemigo = enemigo.y
+    const abajoEnemigo = enemigo.y + enemigo.alto
+    const derechaEnemigo = enemigo.x + enemigo.ancho
+    const izquierdaEnemigo = enemigo.x
+
+    const arribaMascota = mascotaJugadorObjeto.y
+    const abajoMascota = mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto
+    const derechaMascota = mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho
+    const izquierdaMascota = mascotaJugadorObjeto.x
+
+    if(abajoMascota < arribaEnemigo ||
+        arribaMascota > abajoEnemigo ||
+        derechaMascota < izquierdaEnemigo ||
+        izquierdaMascota > derechaEnemigo
+    ) {
+        return
+    }
+
+    detenerMovimiento()
+    alert('Hay colision')
+}
 // CLASES
 
 class Moquepon {
@@ -313,8 +342,8 @@ class Moquepon {
         this.ataques = []
         this.x = x
         this.y = y
-        this.ancho = 80
-        this.alto = 80
+        this.ancho = 40
+        this.alto = 40
         this.mapaFoto = new Image()
         this.mapaFoto.src = fotoMapa
         this.velocidadX = 0
@@ -358,9 +387,9 @@ keton.ataques.push(
 
 moquepones.push(tatara,holala,keton)
 
-let tataraEnemigo = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png', 100, 50)
-let holalaEnemigo = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png', 190, 18)
-let ketonEnemigo = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png', 56, 120)
+let tataraEnemigo = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png', 100, 310)
+let holalaEnemigo = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png', 190, 218)
+let ketonEnemigo = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png', 220, 120)
 
 
 
