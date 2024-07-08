@@ -55,6 +55,100 @@ let lienzo = mapa.getContext('2d')
 let intervalo;
 let mapaBackground = new Image()
 mapaBackground.src = '../assects/mokemap.png'
+let mapaAncho = window.innerWidth - 20
+let mapaAnchoMax = 350
+if(mapaAncho > mapaAnchoMax) {
+    mapaAncho = mapaAnchoMax - 20
+}
+let mapaAlto = mapaAncho * 600 / 800
+
+mapa.width = mapaAncho
+mapa.height = mapaAlto
+
+// CLASES
+
+class Moquepon {
+    constructor(nombre, vidas, img, fotoMapa) {
+        this.nombre = nombre
+        this.vidas = vidas
+        this.img = img
+        this.ataques = []
+        this.ancho = 40
+        this.alto = 40
+        this.x = ramdomNumber(0, mapa.width - this.ancho)
+        this.y = ramdomNumber(0, mapa.height - this.alto)
+        this.mapaFoto = new Image()
+        this.mapaFoto.src = fotoMapa
+        this.velocidadX = 0
+        this.velocidadY = 0
+    }
+    pintarMoquepon() {
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
+    }
+}
+
+let tatara = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png')
+tatara.ataques.push(
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🌱',id:'botton-tierra'}
+)
+
+let tataraEnemigo = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png')
+tataraEnemigo.ataques.push(
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🌱',id:'botton-tierra'}
+)
+
+let holala = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png')
+holala.ataques.push(
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'}
+)
+
+let holalaEnemigo = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png')
+holalaEnemigo.ataques.push(
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'}
+)
+
+let keton = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png')
+keton.ataques.push(
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🌱',id:'botton-tierra'}
+)
+
+let ketonEnemigo = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png')
+ketonEnemigo.ataques.push(
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🌱',id:'botton-tierra'}
+)
+moquepones.push(tatara,holala,keton)
+
+
 
 function iniciarJuego() {
     moquepones.forEach(moquepon => {
@@ -73,8 +167,7 @@ function iniciarJuego() {
 }
 
 function iniciarMapa() {
-    mapa.width = 420
-    mapa.height = 380
+
     intervalo = setInterval(pintarCanvas, 50);
     mascotaJugadorObjeto = obtenerMascotaObjeto()
 
@@ -89,23 +182,21 @@ function seleccionarMascota() {
         }
     }
 
-    //sectionAtaque.style.display = 'flex'
     sectionVerMapa.style.display = 'flex'
     sectionMascota.style.display = 'none'
     iniciarMapa()
     extraerAtaque(mascotaJugador)
-    seleccionarMascotaEnemigo()
 }
 
 function ramdomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function seleccionarMascotaEnemigo() {
+function seleccionarMascotaEnemigo(enemigo) {
     let numeroAleatorio = ramdomNumber(1, moquepones.length -1)
     
-    nombreMascotaEnemigo.innerHTML = moquepones[numeroAleatorio].nombre
-    mascotaEnemigoAtaque = moquepones[numeroAleatorio].ataques
+    nombreMascotaEnemigo.innerHTML = enemigo.nombre
+    mascotaEnemigoAtaque = enemigo.ataques
     secuenciaAtaque()
 }
 
@@ -330,66 +421,11 @@ function revisarColision(enemigo) {
     }
 
     detenerMovimiento()
-    alert('Hay colision')
+    clearInterval(intervalo)
+    sectionAtaque.style.display = 'flex'
+    sectionVerMapa.style.display = 'none'
+    seleccionarMascotaEnemigo(enemigo)
 }
-// CLASES
-
-class Moquepon {
-    constructor(nombre, vidas, img, fotoMapa, x = 20, y = 30) {
-        this.nombre = nombre
-        this.vidas = vidas
-        this.img = img
-        this.ataques = []
-        this.x = x
-        this.y = y
-        this.ancho = 40
-        this.alto = 40
-        this.mapaFoto = new Image()
-        this.mapaFoto.src = fotoMapa
-        this.velocidadX = 0
-        this.velocidadY = 0
-    }
-    pintarMoquepon() {
-        lienzo.drawImage(
-            this.mapaFoto,
-            this.x,
-            this.y,
-            this.ancho,
-            this.alto
-        )
-    }
-}
-
-let tatara = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png')
-tatara.ataques.push(
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🌱',id:'botton-tierra'}
-)
-let holala = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png')
-holala.ataques.push(
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🔥',id:'botton-fuego'}
-)
-let keton = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png')
-keton.ataques.push(
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🌱',id:'botton-tierra'}
-)
-
-moquepones.push(tatara,holala,keton)
-
-let tataraEnemigo = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png', 100, 310)
-let holalaEnemigo = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png', 190, 218)
-let ketonEnemigo = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png', 220, 120)
 
 
 
