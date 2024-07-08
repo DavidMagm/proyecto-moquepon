@@ -45,6 +45,7 @@ let buttonTierra;
 let botones = [];
 let innerAtaques;
 let mascotaJugador;
+let mascotaJugadorObjeto;
 let mascotaEnemigoAtaque;
 let indexAtaqueJugador;
 let indexAtaqueEnmigo;
@@ -52,6 +53,8 @@ let ataques = [];
 let inputMascotaJugador
 let lienzo = mapa.getContext('2d')
 let intervalo;
+let mapaBackground = new Image()
+mapaBackground.src = '../assects/mokemap.png'
 
 function iniciarJuego() {
     moquepones.forEach(moquepon => {
@@ -70,7 +73,10 @@ function iniciarJuego() {
 }
 
 function iniciarMapa() {
-    intervalo = setInterval(pintarPersonaje, 50);
+    mapa.width = 420
+    mapa.height = 380
+    intervalo = setInterval(pintarCanvas, 50);
+    mascotaJugadorObjeto = obtenerMascotaObjeto()
 
 }
 
@@ -174,6 +180,14 @@ function indexAtaque(jugador, enemigo) {
     indexAtaqueEnmigo = enemigoAtaque[enemigo]
 }
 
+function obtenerMascotaObjeto() {
+    for(let i = 0; i < moquepones.length; i++) {
+        if(mascotaJugador == moquepones[i].nombre) {
+            return moquepones[i]
+        }
+    }
+}
+
 function combate() {
 
     for(let i = 0; i < ataqueJugador.length; i++) {
@@ -219,19 +233,6 @@ function resivarVictorias() {
     }
 }
 
-// function ataqueFuego() {
-//     ataqueJugador = 'fuego'
-//     ataqueAleatorioEnemigo()
-// }
-// function ataqueAgua() {
-//     ataqueJugador = 'agua'
-//     ataqueAleatorioEnemigo()
-// }
-// function ataqueTierra() {
-//     ataqueJugador = 'tierra'
-//     ataqueAleatorioEnemigo()
-// }
-
 function mensajeFinal(resultadoFinal) {
     mensajeAtaque.innerHTML = resultadoFinal
     sectionReinicio.style.display = 'block'
@@ -252,38 +253,36 @@ function reiniciandoJuego() {
     location.reload()
 }
 
-function pintarPersonaje() {
-    holala.x = holala.x + holala.velocidadX
-    holala.y = holala.y + holala.velocidadY
+function pintarCanvas() {
+    mascotaJugadorObjeto.x = mascotaJugadorObjeto.x + mascotaJugadorObjeto.velocidadX
+    mascotaJugadorObjeto.y = mascotaJugadorObjeto.y + mascotaJugadorObjeto.velocidadY
     lienzo.clearRect(0, 0, mapa.width, mapa.height)
-    lienzo.drawImage(
-        holala.mapaFoto,
-        holala.x,
-        holala.y,
-        holala.ancho,
-        holala.alto
-    )
+    lienzo.drawImage(mapaBackground, 0, 0, mapa.width, mapa.height)
+    mascotaJugadorObjeto.pintarMoquepon()
+    tataraEnemigo.pintarMoquepon()
+    holalaEnemigo.pintarMoquepon()
+    ketonEnemigo.pintarMoquepon()
 }
 
 function moverPersonajeArriba() {
-    holala.velocidadY = -5
+    mascotaJugadorObjeto.velocidadY = -5
 }
 
 function moverPersonajeDerecha() {
-    holala.velocidadX = 5
+    mascotaJugadorObjeto.velocidadX = 5
 }
 
 function moverPersonajeIzquierda() {
-    holala.velocidadX = -5
+    mascotaJugadorObjeto.velocidadX = -5
 }
 
 function moverPersonajeAbajo() {
-    holala.velocidadY = 5
+    mascotaJugadorObjeto.velocidadY = 5
 }
 
 function detenerMovimiento() {
-    holala.velocidadX = 0
-    holala.velocidadY = 0
+    mascotaJugadorObjeto.velocidadX = 0
+    mascotaJugadorObjeto.velocidadY = 0
 }
 
 function moverConFlecha(event) {
@@ -307,23 +306,32 @@ function moverConFlecha(event) {
 // CLASES
 
 class Moquepon {
-    constructor(nombre, vidas, img) {
+    constructor(nombre, vidas, img, fotoMapa, x = 20, y = 30) {
         this.nombre = nombre
         this.vidas = vidas
         this.img = img
         this.ataques = []
-        this.x = 20
-        this.y = 30
+        this.x = x
+        this.y = y
         this.ancho = 80
         this.alto = 80
         this.mapaFoto = new Image()
-        this.mapaFoto.src = img
+        this.mapaFoto.src = fotoMapa
         this.velocidadX = 0
         this.velocidadY = 0
     }
+    pintarMoquepon() {
+        lienzo.drawImage(
+            this.mapaFoto,
+            this.x,
+            this.y,
+            this.ancho,
+            this.alto
+        )
+    }
 }
 
-let tatara = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp')
+let tatara = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png')
 tatara.ataques.push(
     {nombre:'💧',id:'botton-agua'},
     {nombre:'💧',id:'botton-agua'},
@@ -331,7 +339,7 @@ tatara.ataques.push(
     {nombre:'🔥',id:'botton-fuego'},
     {nombre:'🌱',id:'botton-tierra'}
 )
-let holala = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp')
+let holala = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png')
 holala.ataques.push(
     {nombre:'🌱',id:'botton-tierra'},
     {nombre:'🌱',id:'botton-tierra'},
@@ -339,7 +347,7 @@ holala.ataques.push(
     {nombre:'💧',id:'botton-agua'},
     {nombre:'🔥',id:'botton-fuego'}
 )
-let keton = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp')
+let keton = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png')
 keton.ataques.push(
     {nombre:'🔥',id:'botton-fuego'},
     {nombre:'🔥',id:'botton-fuego'},
@@ -350,7 +358,9 @@ keton.ataques.push(
 
 moquepones.push(tatara,holala,keton)
 
-
+let tataraEnemigo = new Moquepon('tatara', 3, '../assects/mokepons_mokepon_capipepo_attack.webp', '../assects/capipepo.png', 100, 50)
+let holalaEnemigo = new Moquepon('holala', 3, '../assects/mokepons_mokepon_hipodoge_attack.webp', '../assects/hipodoge.png', 190, 18)
+let ketonEnemigo = new Moquepon('keton', 3, '../assects/mokepons_mokepon_ratigueya_attack.webp', '../assects/ratigueya.png', 56, 120)
 
 
 
