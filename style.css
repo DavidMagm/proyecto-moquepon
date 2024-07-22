@@ -119,12 +119,53 @@ input:checked + .tarjeta-moquepon {
     border: 2px solid white;
 }
 
-@media (max-width:360px) {
+#ver-mapa-button{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    grid-template-rows: repeat(3,1fr);
+    margin-top: 8px;
+}
+
+#ver-mapa-button button {
+    width: 80px;
+    padding: 10px;
+    border-radius: 20px;
+    font-family: "Open Sans", sans-serif;
+}
+
+#mover-arriba {
+    grid-column: 2 / 3;
+}
+
+#mover-derecha {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+}
+
+#mover-abajo {
+    grid-row: 3 / 4;
+    grid-column: 2 / 3;
+}
+
+#mover-izquierda {
+    grid-row: 2 / 3;
+    grid-column: 1 / 2;
+}
+
+@media (max-width:560px) {
     .tarjeta, .button-ataques {
         display: flex;
         flex-direction: column;
     }
     .button-ataques {
         gap: 4px;
+    }
+}
+
+@media (max-width:300px) {
+    #ver-mapa-button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 }
