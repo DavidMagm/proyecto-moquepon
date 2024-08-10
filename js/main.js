@@ -32,7 +32,7 @@ for(let button of buttonMover) {
     button.addEventListener('mouseup', detenerMovimiento)
 }
 
-
+let jugadorId = null
 let ataqueJugador = []
 let enemigoAtaque = []
 let victoriasJugador = 0;
@@ -175,6 +175,7 @@ function unirseJuego() {
                 res.text()
                     .then(respuesta => {
                         console.log(respuesta)
+                        jugadorId = respuesta
                     })
             }
         })
@@ -196,10 +197,24 @@ function seleccionarMascota() {
         }
     }
 
+    seleccionarMoquepon(mascotaJugador)
+
     sectionVerMapa.style.display = 'flex'
     sectionMascota.style.display = 'none'
     iniciarMapa()
     extraerAtaque(mascotaJugador)
+}
+
+function seleccionarMoquepon(mascotaJugador) {
+    fetch(`http://localhost:8080/moquepon/${jugadorId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            moquepon: mascotaJugador
+        })
+    })
 }
 
 function ramdomNumber(min, max) {
