@@ -39,6 +39,7 @@ let victoriasJugador = 0;
 let victoriasEnemigo = 0;
 let innerMoquepones;
 let moquepones = []
+let moqueponesEnemigos = []
 let buttonAgua;
 let buttonFuego;
 let buttonTierra;
@@ -68,7 +69,8 @@ mapa.height = mapaAlto
 // CLASES
 
 class Moquepon {
-    constructor(nombre, vidas, img, fotoMapa) {
+    constructor(nombre, vidas, img, fotoMapa, id = null) {
+        this.id = id
         this.nombre = nombre
         this.vidas = vidas
         this.img = img
@@ -93,59 +95,38 @@ class Moquepon {
     }
 }
 
+const TATARA_ATAQUES = [
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'💧',id:'botton-agua'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🌱',id:'botton-tierra'}
+]
+
 let tatara = new Moquepon('tatara', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_capipepo_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/capipepo.png')
-tatara.ataques.push(
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🌱',id:'botton-tierra'}
-)
+tatara.ataques.push(...TATARA_ATAQUES)
 
-let tataraEnemigo = new Moquepon('tatara', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_capipepo_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/capipepo.png')
-tataraEnemigo.ataques.push(
+const HOLALA_ATAQUE = [
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
+    {nombre:'🌱',id:'botton-tierra'},
     {nombre:'💧',id:'botton-agua'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🌱',id:'botton-tierra'}
-)
-
+    {nombre:'🔥',id:'botton-fuego'}
+]
 let holala = new Moquepon('holala', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_hipodoge_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/hipodoge.png')
-holala.ataques.push(
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🔥',id:'botton-fuego'}
-)
+holala.ataques.push(...HOLALA_ATAQUE)
 
-let holalaEnemigo = new Moquepon('holala', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_hipodoge_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/hipodoge.png')
-holalaEnemigo.ataques.push(
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'🌱',id:'botton-tierra'},
-    {nombre:'🌱',id:'botton-tierra'},
+const KETON_ATAQUE = [
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
+    {nombre:'🔥',id:'botton-fuego'},
     {nombre:'💧',id:'botton-agua'},
-    {nombre:'🔥',id:'botton-fuego'}
-)
+    {nombre:'🌱',id:'botton-tierra'}
+]
 
 let keton = new Moquepon('keton', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_ratigueya_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/ratigueya.png')
-keton.ataques.push(
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🌱',id:'botton-tierra'}
-)
+keton.ataques.push(...KETON_ATAQUE)
 
-let ketonEnemigo = new Moquepon('keton', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_ratigueya_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/ratigueya.png')
-ketonEnemigo.ataques.push(
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'🔥',id:'botton-fuego'},
-    {nombre:'💧',id:'botton-agua'},
-    {nombre:'🌱',id:'botton-tierra'}
-)
 moquepones.push(tatara,holala,keton)
 
 
@@ -379,15 +360,53 @@ function pintarCanvas() {
     lienzo.clearRect(0, 0, mapa.width, mapa.height)
     lienzo.drawImage(mapaBackground, 0, 0, mapa.width, mapa.height)
     mascotaJugadorObjeto.pintarMoquepon()
-    tataraEnemigo.pintarMoquepon()
-    holalaEnemigo.pintarMoquepon()
-    ketonEnemigo.pintarMoquepon()
+
+    enviarPosicion(mascotaJugadorObjeto.x, mascotaJugadorObjeto.y)
+    moqueponesEnemigos.forEach(function(moquepon) {
+        moquepon.pintarMoquepon()
+    })
+
 
     if(mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
-        revisarColision(holalaEnemigo)
         revisarColision(tataraEnemigo)
         revisarColision(ketonEnemigo)
     }
+}
+
+function enviarPosicion(x,y) {
+    fetch(`http://localhost:8080/moquepon/${jugadorId}/posicion`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+        .then(function (res) {
+            if(res.ok) {
+                res.json()
+                    .then(function ({enemigos}) {
+                        console.log(enemigos)
+                        moqueponesEnemigos = enemigos.map(function (enemigo) {
+                            const moqueponNombre = enemigo.moquepon.nombre || ""
+                            let moqueponEnemigo = null
+                            if(moqueponNombre == 'holala') {
+                                moqueponEnemigo = new Moquepon('holala', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_hipodoge_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/hipodoge.png')
+                            } else if(moqueponNombre == 'keton') {
+                                moqueponEnemigo = new Moquepon('keton', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_ratigueya_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/ratigueya.png')
+                            } else if(moqueponNombre == 'tatara') {
+                                moqueponEnemigo = new Moquepon('tatara', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_capipepo_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/capipepo.png')
+                            }
+                            moqueponEnemigo.x = enemigo.x
+                            moqueponEnemigo.y = enemigo.y
+
+                            return moqueponEnemigo
+                        })
+                    })
+            }
+        })
 }
 
 function moverPersonajeArriba() {
