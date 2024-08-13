@@ -33,6 +33,7 @@ for(let button of buttonMover) {
 }
 
 let jugadorId = null
+let enemigoId = null
 let ataqueJugador = []
 let enemigoAtaque = []
 let victoriasJugador = 0;
@@ -252,7 +253,21 @@ function secuenciaAtaque() {
                 boton.style.background = '#112f58'
                 boton.disabled = true
             }
-            ataqueAleatorioEnemigo()
+            if(ataqueJugador.length == 5) {
+                enviarAtaques()
+            }
+        }) 
+    })
+}
+
+function enviarAtaques() {
+    fetch(`http://localhost:8080/moquepon/${jugadorId}/ataques`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            ataques: ataqueJugador
         })
     })
 }
@@ -364,13 +379,9 @@ function pintarCanvas() {
     enviarPosicion(mascotaJugadorObjeto.x, mascotaJugadorObjeto.y)
     moqueponesEnemigos.forEach(function(moquepon) {
         moquepon.pintarMoquepon()
+        revisarColision(moquepon)
     })
 
-
-    if(mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
-        revisarColision(tataraEnemigo)
-        revisarColision(ketonEnemigo)
-    }
 }
 
 function enviarPosicion(x,y) {
@@ -393,11 +404,11 @@ function enviarPosicion(x,y) {
                             const moqueponNombre = enemigo.moquepon.nombre || ""
                             let moqueponEnemigo = null
                             if(moqueponNombre == 'holala') {
-                                moqueponEnemigo = new Moquepon('holala', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_hipodoge_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/hipodoge.png')
+                                moqueponEnemigo = new Moquepon('holala', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_hipodoge_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/hipodoge.png',enemigo.id)
                             } else if(moqueponNombre == 'keton') {
-                                moqueponEnemigo = new Moquepon('keton', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_ratigueya_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/ratigueya.png')
+                                moqueponEnemigo = new Moquepon('keton', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_ratigueya_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/ratigueya.png', enemigo.id)
                             } else if(moqueponNombre == 'tatara') {
-                                moqueponEnemigo = new Moquepon('tatara', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_capipepo_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/capipepo.png')
+                                moqueponEnemigo = new Moquepon('tatara', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_capipepo_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/capipepo.png',enemigo.id)
                             }
                             moqueponEnemigo.x = enemigo.x
                             moqueponEnemigo.y = enemigo.y
@@ -470,6 +481,7 @@ function revisarColision(enemigo) {
 
     detenerMovimiento()
     clearInterval(intervalo)
+    enemigoId = enemigo.id
     sectionAtaque.style.display = 'flex'
     sectionVerMapa.style.display = 'none'
     seleccionarMascotaEnemigo(enemigo)
