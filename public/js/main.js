@@ -56,7 +56,7 @@ let inputMascotaJugador
 let lienzo = mapa.getContext('2d')
 let intervalo;
 let mapaBackground = new Image()
-mapaBackground.src = '/Ubuntu/home/davidco/javascript/moquepon/assects/mokemap.png'
+mapaBackground.src = './assects/mokemap.png'
 let mapaAncho = window.innerWidth - 20
 let mapaAnchoMax = 350
 if(mapaAncho > mapaAnchoMax) {
@@ -104,7 +104,7 @@ const TATARA_ATAQUES = [
     {nombre:'🌱',id:'botton-tierra'}
 ]
 
-let tatara = new Moquepon('tatara', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_capipepo_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/capipepo.png')
+let tatara = new Moquepon('tatara', 3, './assects/mokepons_mokepon_capipepo_attack.webp', './assects/capipepo.png')
 tatara.ataques.push(...TATARA_ATAQUES)
 
 const HOLALA_ATAQUE = [
@@ -114,7 +114,7 @@ const HOLALA_ATAQUE = [
     {nombre:'💧',id:'botton-agua'},
     {nombre:'🔥',id:'botton-fuego'}
 ]
-let holala = new Moquepon('holala', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_hipodoge_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/hipodoge.png')
+let holala = new Moquepon('holala', 3, './assects/mokepons_mokepon_hipodoge_attack.webp', './assects/hipodoge.png')
 holala.ataques.push(...HOLALA_ATAQUE)
 
 const KETON_ATAQUE = [
@@ -125,7 +125,7 @@ const KETON_ATAQUE = [
     {nombre:'🌱',id:'botton-tierra'}
 ]
 
-let keton = new Moquepon('keton', 3, '/Ubuntu/home/davidco/javascript/moquepon/assects/mokepons_mokepon_ratigueya_attack.webp', '/Ubuntu/home/davidco/javascript/moquepon/assects/ratigueya.png')
+let keton = new Moquepon('keton', 3, './assects/mokepons_mokepon_ratigueya_attack.webp', './assects/ratigueya.png')
 keton.ataques.push(...KETON_ATAQUE)
 
 moquepones.push(tatara,holala,keton)
