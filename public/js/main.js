@@ -23,6 +23,12 @@ moverArriba.addEventListener('mousedown', moverPersonajeArriba)
 moverDerecha.addEventListener('mousedown', moverPersonajeDerecha)
 moverIzquierda.addEventListener('mousedown', moverPersonajeIzquierda)
 moverAbajo.addEventListener('mousedown', moverPersonajeAbajo)
+
+moverArriba.addEventListener('touchstart', moverPersonajeArriba)
+moverDerecha.addEventListener('touchstart', moverPersonajeDerecha)
+moverIzquierda.addEventListener('touchstart', moverPersonajeIzquierda)
+moverAbajo.addEventListener('touchstart', moverPersonajeAbajo)
+
 buttonMascotaJugador.addEventListener('mousedown', seleccionarMascota)
 buttonReiniciar.addEventListener('mousedown', reiniciandoJuego)
 window.addEventListener('keydown', moverConFlecha)
@@ -30,6 +36,7 @@ window.addEventListener('keyup', detenerMovimiento);
 
 for(let button of buttonMover) {
     button.addEventListener('mouseup', detenerMovimiento)
+    button.addEventListener('touchend', detenerMovimiento)
 }
 
 let jugadorId = null
@@ -176,6 +183,9 @@ function seleccionarMascota() {
         if(mascota.checked) {
             nombreMascotaJugador.innerHTML = mascota.id
             mascotaJugador = mascota.id
+        } else {
+            alert('Selecciona una mascota')
+            return
         }
     }
 
